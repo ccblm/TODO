@@ -9,7 +9,7 @@
 import UIKit
 
 class TodoListViewController: UITableViewController {
-    let itemArray = ["action1", "action2", "action3"]
+    var itemArray = ["action1", "action2", "action3"]
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -33,6 +33,22 @@ class TodoListViewController: UITableViewController {
         }else{
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
+    }
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add a new project", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Add a Project", style: .default) { (action) in
+            self.itemArray.append(textField.text!)
+            self.tableView.reloadData()
+        }
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create a new project"
+            textField = alertTextField
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
 }
 
