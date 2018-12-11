@@ -9,9 +9,13 @@
 import UIKit
 
 class TodoListViewController: UITableViewController {
+    let defaults = UserDefaults.standard
     var itemArray = ["action1", "action2", "action3"]
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -34,6 +38,7 @@ class TodoListViewController: UITableViewController {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
     }
+    
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
         var textField = UITextField()
@@ -41,6 +46,7 @@ class TodoListViewController: UITableViewController {
         let alert = UIAlertController(title: "Add a new project", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add a Project", style: .default) { (action) in
             self.itemArray.append(textField.text!)
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
             self.tableView.reloadData()
         }
         alert.addTextField { (alertTextField) in
@@ -49,8 +55,6 @@ class TodoListViewController: UITableViewController {
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
-        
-        
     }
 }
 
